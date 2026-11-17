@@ -389,6 +389,12 @@
       font-size: 1.45rem;
     }
 
+    .snake-launcher::before {
+      content: "🎮";
+      position: relative;
+      z-index: 2;
+    }
+
     .snake-game {
       position: fixed;
       right: 22px;
@@ -472,6 +478,39 @@
       font-size: .72rem;
     }
 
+    .snake-controls {
+      display: grid;
+      grid-template-columns: repeat(3, 42px);
+      grid-template-rows: repeat(2, 42px);
+      justify-content: center;
+      gap: 5px;
+      margin-top: 8px;
+    }
+
+    .snake-controls button {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      background: rgba(155,92,246,.12);
+      cursor: pointer;
+    }
+
+    .snake-controls [data-direction="up"] { grid-column: 2; }
+    .snake-controls [data-direction="left"] { grid-column: 1; grid-row: 2; }
+    .snake-controls [data-direction="down"] { grid-column: 2; grid-row: 2; }
+    .snake-controls [data-direction="right"] { grid-column: 3; grid-row: 2; }
+
+    #snake-restart {
+      min-width: 30px;
+      width: 30px;
+      height: 30px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      background: rgba(155,92,246,.12);
+      cursor: pointer;
+    }
+
     @media (max-width: 520px) {
       .snake-game { width: 342px; }
       #snake-canvas, #checkers-canvas, #chess-canvas { width: 318px; height: 318px; }
@@ -531,7 +570,7 @@
             Vamos conversar
           </a>
 
-          <a href="https://www.linkedin.com/in/thiago-prestes-dev/" target="_blank" class="button">
+          <a href="https://www.linkedin.com/in/thiago-prestes22/" target="_blank" rel="noopener noreferrer" class="button">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M16 8a6 6 0 1 0-8 0 6 6 0 0 0 8 0zM2 12h4v8H2zm8 0h4v8h-4z"></path>
             </svg>
@@ -559,51 +598,51 @@
     </footer>
   </div>
 
-  <div class="snake-launcher" aria-label="Iniciar jogo da cobrinha">
-    <section class="snake-game" id="snake-game" aria-label="Central de jogos">
+  <button class="snake-launcher" type="button" aria-label="Abrir opções de jogos" aria-expanded="false"></button>
+  <section class="snake-game" id="snake-game" aria-label="Central de jogos">
+    <div class="snake-header">
+      <span>Central de jogos</span>
+      <button id="snake-close" type="button" aria-label="Fechar jogos">✕</button>
+    </div>
+
+    <div class="game-tabs" aria-label="Escolher jogo">
+      <button type="button" class="active" data-game="snake">Cobrinha</button>
+      <button type="button" data-game="checkers">Damas</button>
+      <button type="button" data-game="chess">Xadrez</button>
+    </div>
+
+    <div class="difficulty-tabs" aria-label="Escolher dificuldade">
+      <button type="button" data-difficulty="easy" class="active">Fácil</button>
+      <button type="button" data-difficulty="medium">Médio</button>
+      <button type="button" data-difficulty="hard">Difícil</button>
+    </div>
+
+    <div class="game-view active" id="snake-view">
       <div class="snake-header">
-        <span>Central de jogos</span>
-        <button id="snake-close" type="button" aria-label="Fechar jogos">✕</button>
+        <span>Pontos · <b id="snake-score">0</b></span>
+        <button id="snake-restart" type="button" aria-label="Reiniciar cobrinha">↻</button>
       </div>
-
-      <div class="game-tabs" aria-label="Escolher jogo">
-        <button type="button" class="active" data-game="snake">Cobrinha</button>
-        <button type="button" data-game="checkers">Damas</button>
-        <button type="button" data-game="chess">Xadrez</button>
+      <canvas id="snake-canvas" width="256" height="256" tabindex="0" aria-label="Tabuleiro da Cobrinha"></canvas>
+      <div class="snake-controls" aria-label="Controles da cobrinha">
+        <button type="button" data-direction="up" aria-label="Mover para cima">▲</button>
+        <button type="button" data-direction="left" aria-label="Mover para esquerda">◀</button>
+        <button type="button" data-direction="down" aria-label="Mover para baixo">▼</button>
+        <button type="button" data-direction="right" aria-label="Mover para direita">▶</button>
       </div>
+    </div>
 
-      <div class="difficulty-tabs" aria-label="Escolher dificuldade">
-        <button type="button" data-difficulty="easy" class="active">Fácil</button>
-        <button type="button" data-difficulty="medium">Médio</button>
-        <button type="button" data-difficulty="hard">Difícil</button>
-      </div>
+    <div class="game-view" id="checkers-view">
+      <canvas id="checkers-canvas" width="320" height="320"></canvas>
+      <div class="board-status" id="checkers-status">Sua vez: peças claras</div>
+    </div>
 
-      <div class="game-view active" id="snake-view">
-        <div class="snake-header">
-          <span>Pontos · <b id="snake-score">0</b></span>
-        </div>
-        <canvas id="snake-canvas" width="256" height="256"></canvas>
-        <div class="snake-controls" aria-label="Controles da cobrinha">
-          <button type="button" data-direction="up" aria-label="Mover para cima">▲</button>
-          <button type="button" data-direction="left" aria-label="Mover para esquerda">◀</button>
-          <button type="button" data-direction="down" aria-label="Mover para baixo">▼</button>
-          <button type="button" data-direction="right" aria-label="Mover para direita">▶</button>
-        </div>
-      </div>
+    <div class="game-view" id="chess-view">
+      <canvas id="chess-canvas" width="320" height="320"></canvas>
+      <div class="board-status" id="chess-status">Sua vez: peças brancas</div>
+    </div>
+  </section>
 
-      <div class="game-view" id="checkers-view">
-        <canvas id="checkers-canvas" width="320" height="320"></canvas>
-        <div class="board-status" id="checkers-status">Sua vez: peças claras</div>
-      </div>
-
-      <div class="game-view" id="chess-view">
-        <canvas id="chess-canvas" width="320" height="320"></canvas>
-        <div class="board-status" id="chess-status">Sua vez: peças brancas</div>
-      </div>
-    </section>
-  </div>
-
-  <script>
+  <script type="text/plain">
     // Script para alternar temas
     const themeToggle = document.querySelector('.theme-toggle');
     const currentTheme = localStorage.getItem('theme');
@@ -943,5 +982,6 @@
       drawCheckers();
     });
   </script>
+  <script src="games.js"></script>
 </body>
 </html>
