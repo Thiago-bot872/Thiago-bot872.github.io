@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#09070d">
+  <meta name="description" content="Página pessoal de Thiago Prestes">
+  <title>Thiago Prestes — Estagiário</title>
+  <style>
+    :root {
+      --bg: #09070d;
+      --surface: rgba(22, 17, 30, 0.82);
+      --surface-strong: #17121f;
+      --text: #f7f3ff;
+      --muted: #b1a8bd;
+      --accent: #9b5cf6;
+      --accent-2: #b98cff;
+      --border: rgba(185, 140, 255, 0.16);
+      --shadow: 0 24px 70px rgba(0, 0, 0, 0.38);
+    }
+
+    :root[data-theme="light"] {
+      --bg: #f4f0fa;
+      --surface: rgba(255, 255, 255, 0.82);
+      --surface-strong: #ffffff;
+      --text: #1d1726;
+      --muted: #685f73;
+      --accent: #8550d5;
+      --accent-2: #7040b3;
+      --border: rgba(112, 64, 179, 0.16);
+      --shadow: 0 24px 70px rgba(74, 48, 105, 0.14);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      overflow-x: hidden;
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 82% 12%, rgba(155, 92, 246, 0.18), transparent 26rem),
+        radial-gradient(circle at 12% 84%, rgba(115, 48, 196, 0.12), transparent 24rem),
+        var(--bg);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      opacity: 0.22;
+      background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: linear-gradient(to bottom, black, transparent 80%);
+    }
+
+    .orb {
+      position: fixed;
+      width: 18rem;
+      height: 18rem;
+      border-radius: 50%;
+      filter: blur(90px);
+      pointer-events: none;
+      z-index: -1;
+      background: rgba(155, 92, 246, 0.13);
+      transform: translate(var(--x, 0), var(--y, 0));
+      transition: transform 0.25s ease-out;
+    }
+
+    .shell {
+      width: min(1120px, calc(100% - 40px));
+      margin-inline: auto;
+    }
+
+    nav {
+      height: 88px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text);
+      font-weight: 800;
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 38px;
+      height: 38px;
+      place-items: center;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: linear-gradient(145deg, rgba(155,92,246,.24), rgba(155,92,246,.06));
+      box-shadow: inset 0 1px rgba(255,255,255,.08);
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .theme-toggle {
+      display: grid;
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      place-items: center;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text);
+      background: var(--surface);
+      cursor: pointer;
+      transition: transform .2s ease, border-color .2s ease, background .25s ease;
+    }
+
+    .theme-toggle:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent-2);
+    }
+
+    .theme-toggle svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .sun-icon { display: none; }
+    :root[data-theme="light"] .sun-icon { display: block; }
+    :root[data-theme="light"] .moon-icon { display: none; }
+
+    main {
+      min-height: calc(100vh - 88px);
+      display: grid;
+      grid-template-columns: 1.35fr 0.65fr;
+      gap: 24px;
+      align-items: center;
+      padding-block: 48px 88px;
+    }
+
+    .hero {
+      max-width: 760px;
+      animation: reveal .7s cubic-bezier(.2,.75,.25,1) both;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--accent-2);
+      background: rgba(155,92,246,.07);
+      font-size: 0.78rem;
+      font-weight: 750;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 720px;
+      font-size: clamp(3.5rem, 8vw, 7rem);
+      line-height: 0.92;
+      letter-spacing: -.075em;
+    }
+
+    h1 span {
+      display: block;
+      color: transparent;
+      background: linear-gradient(110deg, var(--text) 20%, var(--accent-2) 90%);
+      background-clip: text;
+      -webkit-background-clip: text;
+    }
+
+    .intro {
+      max-width: 610px;
+      margin: 28px 0 34px;
+      color: var(--muted);
+      font-size: clamp(1.05rem, 2vw, 1.22rem);
+      line-height: 1.75;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .button {
+      display: inline-flex;
+      min-height: 52px;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 18px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      color: var(--text);
+      background: rgba(255,255,255,.035);
+      font-weight: 750;
+      text-decoration: none;
+      transition: transform .2s ease, border-color .2s ease, background .2s ease, box-shadow .2s ease;
+    }
+
+    .button.primary {
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--accent), #7540c7);
+      box-shadow: 0 14px 36px rgba(155,92,246,.22);
+    }
+
+    .button:hover {
+      transform: translateY(-3px);
+      border-color: rgba(185,140,255,.42);
+    }
+
+    .button.primary:hover {
+      box-shadow: 0 18px 44px rgba(155,92,246,.34);
+    }
+
+    .button svg { width: 18px; height: 18px; }
+
+    .profile-card {
+      position: relative;
+      min-height: 420px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,.055), transparent 38%),
+        var(--surface);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      animation: reveal .7s .12s cubic-bezier(.2,.75,.25,1) both;
+    }
+
+    .profile-card::before {
+      content: "";
+      position: absolute;
+      width: 280px;
+      height: 280px;
+      right: -110px;
+      top: -130px;
+      border: 1px solid rgba(185,140,255,.16);
+      border-radius: 50%;
+      box-shadow: 0 0 0 38px rgba(155,92,246,.025), 0 0 0 76px rgba(155,92,246,.018);
+    }
+
+    .avatar-wrap {
+      height: 250px;
+      display: grid;
+      place-items: center;
+    }
+
+    .avatar {
+      position: relative;
+      display: grid;
+      width: 168px;
+      height: 168px;
+      place-items: center;
+      border: 1px solid rgba(185,140,255,.28);
+      border-radius: 50%;
+      color: white;
+      background:
+        radial-gradient(circle at 35% 28%, rgba(255,255,255,.16), transparent 12%),
+        linear-gradient(145deg, #a96af8, #59308f);
+      font-size: 3.7rem;
+      font-weight: 850;
+      letter-spacing: -.08em;
+      box-shadow: 0 20px 60px rgba(155,92,246,.24), inset 0 1px rgba(255,255,255,.18);
+    }
+
+    .avatar::after {
+      content: "";
+      position: absolute;
+      inset: 10px;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 50%;
+    }
+
+    .card-content {
+      position: absolute;
+      right: 20px;
+      bottom: 20px;
+      left: 20px;
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: rgba(9,7,13,.64);
+    }
+
+    .card-content strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 1.05rem;
+    }
+
+    .card-content span {
+      color: var(--muted);
+      font-size: .88rem;
+    }
+
+    footer {
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      color: rgba(177,168,189,.62);
+      font-size: .78rem;
+      transform: translateX(-50%);
+      white-space: nowrap;
+    }
+
+    @keyframes reveal {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 850px) {
+      main {
+        grid-template-columns: 1fr;
+        padding-top: 32px;
+      }
+
+      .profile-card {
+        min-height: 390px;
+      }
+
+      h1 { font-size: clamp(3.5rem, 16vw, 6rem); }
+
+      footer { display: none; }
+    }
+
+    @media (max-width: 520px) {
+      .shell { width: min(100% - 28px, 1120px); }
+      nav { height: 76px; }
+      .status { display: none; }
+      main { min-height: calc(100vh - 76px); padding-bottom: 40px; }
+      h1 { font-size: clamp(3.2rem, 17vw, 5rem); }
+      .intro { margin-block: 22px 28px; }
+      .actions { align-items: stretch; }
+      .button { flex: 1 1 100%; }
+      .profile-card { min-height: 360px; }
+      .avatar-wrap { height: 220px; }
+      .avatar { width: 150px; height: 150px; font-size: 3.2rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
+
+    .snake-launcher {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      z-index: 20;
+      display: grid;
+      width: 58px;
+      height: 58px;
+      padding: 0;
+      place-items: center;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      color: var(--text);
+      background: var(--surface-strong);
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      font-size: 1.45rem;
+    }
+
+    .snake-game {
+      position: fixed;
+      right: 22px;
+      bottom: 92px;
+      z-index: 19;
+      width: 356px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      transform: translateY(16px) scale(.96);
+      opacity: 0;
+      visibility: hidden;
+      transition: .22s ease;
+    }
+
+    .snake-game.open {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .snake-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 2px 4px 10px;
+      font-size: .82rem;
+      font-weight: 800;
+    }
+
+    .snake-header button {
+      width: 30px;
+      height: 30px;
+      border: 0;
+      border-radius: 8px;
+      color: var(--muted);
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .game-tabs, .difficulty-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .game-tabs button, .difficulty-tabs button {
+      min-height: 34px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      color: var(--muted);
+      background: rgba(155,92,246,.06);
+      cursor: pointer;
+      font-size: .72rem;
+      font-weight: 800;
+    }
+
+    .game-tabs button.active, .difficulty-tabs button.active {
+      color: white;
+      border-color: rgba(185,140,255,.5);
+      background: linear-gradient(135deg, rgba(155,92,246,.78), rgba(117,64,199,.78));
+    }
+
+    .game-view { display: none; }
+    .game-view.active { display: block; }
+
+    #snake-canvas, #checkers-canvas, #chess-canvas {
+      width: 330px;
+      height: 330px;
+    }
+
+    .board-status {
+      min-height: 24px;
+      margin: 7px 2px 0;
+      color: var(--muted);
+      text-align: center;
+      font-size: .72rem;
+    }
+
+    @media (max-width: 520px) {
+      .snake-game { width: 342px; }
+      #snake-canvas, #checkers-canvas, #chess-canvas { width: 318px; height: 318px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="orb" style="--x: 20vw; --y: 10vh;"></div>
+  <div class="orb" style="--x: 80vw; --y: 30vh;"></div>
+  <div class="orb" style="--x: 10vw; --y: 70vh;"></div>
+  <div class="orb" style="--x: 90vw; --y: 80vh;"></div>
+
+  <div class="shell">
+    <nav>
+      <a href="#" class="brand">
+        <div class="brand-mark">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v20m10-10H2"></path>
+          </svg>
+        </div>
+        Thiago Prestes
+      </a>
+
+      <div class="status">Estagiário</div>
+
+      <div class="nav-actions">
+        <button class="theme-toggle" aria-label="Alternar tema">
+          <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 4V2m8.66 3.34l1.42-1.42M20 12h2m-3.34 8.66l1.42 1.42M12 20v2m-8.66-3.34L2.92 20M4 12H2m3.34-8.66L4.58 2.92"></path>
+          </svg>
+
+          <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a10 10 0 0 0 0 20 10 10 0 0 0 0-20z"></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main>
+      <section class="hero">
+        <div class="eyebrow">Olá, eu sou</div>
+
+        <h1>
+          Thiago Prestes
+          <span>Desenvolvedor Front-end</span>
+        </h1>
+
+        <div class="intro">
+          Sou um estudante de Análise e Desenvolvimento de Sistemas, apaixonado por tecnologia e aprendizado contínuo. Atualmente, estou em busca de uma oportunidade como estagiário em desenvolvimento front-end.
+        </div>
+
+        <div class="actions">
+          <a href="#contato" class="button primary">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 6h16M4 12h16m-7 6h7"></path>
+            </svg>
+            Vamos conversar
+          </a>
+
+          <a href="https://www.linkedin.com/in/thiago-prestes-dev/" target="_blank" class="button">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 8a6 6 0 1 0-8 0 6 6 0 0 0 8 0zM2 12h4v8H2zm8 0h4v8h-4z"></path>
+            </svg>
+            Meu LinkedIn
+          </a>
+        </div>
+      </section>
+
+      <aside class="profile-card">
+        <div class="avatar-wrap">
+          <div class="avatar">
+            TP
+          </div>
+        </div>
+
+        <div class="card-content">
+          <strong>Thiago Prestes</strong>
+          <span>Estagiário em Desenvolvimento Front-end</span>
+        </div>
+      </aside>
+    </main>
+
+    <footer>
+      Thiago Prestes © 2023. Todos os direitos reservados.
+    </footer>
+  </div>
+
+  <div class="snake-launcher" aria-label="Iniciar jogo da cobrinha">
+    <section class="snake-game" id="snake-game" aria-label="Central de jogos">
+      <div class="snake-header">
+        <span>Central de jogos</span>
+        <button id="snake-close" type="button" aria-label="Fechar jogos">✕</button>
+      </div>
+
+      <div class="game-tabs" aria-label="Escolher jogo">
+        <button type="button" class="active" data-game="snake">Cobrinha</button>
+        <button type="button" data-game="checkers">Damas</button>
+        <button type="button" data-game="chess">Xadrez</button>
+      </div>
+
+      <div class="difficulty-tabs" aria-label="Escolher dificuldade">
+        <button type="button" data-difficulty="easy" class="active">Fácil</button>
+        <button type="button" data-difficulty="medium">Médio</button>
+        <button type="button" data-difficulty="hard">Difícil</button>
+      </div>
+
+      <div class="game-view active" id="snake-view">
+        <div class="snake-header">
+          <span>Pontos · <b id="snake-score">0</b></span>
+        </div>
+        <canvas id="snake-canvas" width="256" height="256"></canvas>
+        <div class="snake-controls" aria-label="Controles da cobrinha">
+          <button type="button" data-direction="up" aria-label="Mover para cima">▲</button>
+          <button type="button" data-direction="left" aria-label="Mover para esquerda">◀</button>
+          <button type="button" data-direction="down" aria-label="Mover para baixo">▼</button>
+          <button type="button" data-direction="right" aria-label="Mover para direita">▶</button>
+        </div>
+      </div>
+
+      <div class="game-view" id="checkers-view">
+        <canvas id="checkers-canvas" width="320" height="320"></canvas>
+        <div class="board-status" id="checkers-status">Sua vez: peças claras</div>
+      </div>
+
+      <div class="game-view" id="chess-view">
+        <canvas id="chess-canvas" width="320" height="320"></canvas>
+        <div class="board-status" id="chess-status">Sua vez: peças brancas</div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // Script para alternar temas
+    const themeToggle = document.querySelector('.theme-toggle');
+    const currentTheme = localStorage.getItem('theme');
+
+    if (currentTheme) {
+      document.documentElement.setAttribute('data-theme', currentTheme);
+
+      if (currentTheme === 'light') {
+        document.querySelector('.sun-icon').style.display = 'block';
+        document.querySelector('.moon-icon').style.display = 'none';
+      } else {
+        document.querySelector('.sun-icon').style.display = 'none';
+        document.querySelector('.moon-icon').style.display = 'block';
+      }
+    }
+
+    themeToggle.addEventListener('click', () => {
+      let theme = 'light';
+
+      if (document.documentElement.getAttribute('data-theme') === 'light') {
+        theme = 'dark';
+      }
+
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+
+      document.querySelector('.sun-icon').style.display = theme === 'light' ? 'block' : 'none';
+      document.querySelector('.moon-icon').style.display = theme === 'light' ? 'none' : 'block';
+    });
+
+    // Script para o jogo da cobrinha
+    const snakeLauncher = document.querySelector('.snake-launcher');
+    const snakeGame = document.querySelector('.snake-game');
+    const closeSnakeGame = document.querySelector('.close-snake-game');
+    const gameViews = document.querySelectorAll('.game-view');
+    const difficultyTabs = document.querySelectorAll('.difficulty-tabs button');
+    const boardStatus = document.querySelector('.board-status');
+
+    snakeLauncher.addEventListener('click', () => {
+      snakeGame.classList.toggle('open');
+    });
+
+    closeSnakeGame.addEventListener('click', (e) => {
+      e.stopPropagation();
+      snakeGame.classList.remove('open');
+    });
+
+    // Lógica simplificada para troca de abas de jogo
+    document.querySelectorAll('.game-tabs button').forEach(tab => {
+      tab.addEventListener('click', () => {
+        const target = tab.getAttribute('aria-controls');
+
+        gameViews.forEach(view => {
+          view.classList.remove('active');
+          if (view.getAttribute('id') === target) {
+            view.classList.add('active');
+          }
+        });
+
+        document.querySelector('.game-tabs button.active').classList.remove('active');
+        tab.classList.add('active');
+      });
+    });
+
+    // Lógica simplificada para troca de dificuldade
+    difficultyTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const level = tab.getAttribute('aria-controls');
+
+        // Aqui você pode adicionar a lógica para mudar a dificuldade do jogo
+
+        document.querySelector('.difficulty-tabs button.active').classList.remove('active');
+        tab.classList.add('active');
+      });
+    });
+
+    // Exemplo de lógica para o jogo da cobrinha (Snake Game)
+    const canvas = document.getElementById('snake-canvas');
+    const ctx = canvas.getContext('2d');
+    const box = 20;
+    let snake = [{ x: 9 * box, y: 10 * box }];
+    let direction = 'RIGHT';
+    let food = {
+      x: Math.floor(Math.random() * 18 + 1) * box,
+      y: Math.floor(Math.random() * 18 + 3) * box
+    };
+
+    function drawBackground() {
+      ctx.fillStyle = 'rgba(9, 7, 13, .64)';
+      ctx.fillRect(0, 0, 400, 400);
+    }
+
+    function drawSnake() {
+      for (let i = 0; i < snake.length; i++) {
+        ctx.fillStyle = i === 0 ? '#9b5cf6' : '#a96af8';
+        ctx.fillRect(snake[i].x, snake[i].y, box, box);
+      }
+    }
+
+    function drawFood() {
+      ctx.fillStyle = '#ff6b6b';
+      ctx.fillRect(food.x, food.y, box, box);
+    }
+
+    function moveSnake() {
+      const head = { x: snake[0].x, y: snake[0].y };
+
+      if (direction === 'LEFT') head.x -= box;
+      if (direction === 'UP') head.y -= box;
+      if (direction === 'RIGHT') head.x += box;
+      if (direction === 'DOWN') head.y += box;
+
+      if (head.x === food.x && head.y === food.y) {
+        food = {
+          x: Math.floor(Math.random() * 18 + 1) * box,
+          y: Math.floor(Math.random() * 18 + 3) * box
+        };
+      } else {
+        snake.pop();
+      }
+
+      snake.unshift(head);
+    }
+
+    function checkCollision(head) {
+      if (head.x < 0 || head.y < 0 || head.x >= 400 || head.y >= 400) {
+        return true;
+      }
+
+      for (let i = 1; i < snake.length; i++) {
+        if (head.x === snake[i].x && head.y === snake[i].y) {
+          return true;
+        }
+      }
+
+      return false;
+    }
+
+    function gameLoop() {
+      drawBackground();
+      drawSnake();
+      drawFood();
+      moveSnake();
+
+      const head = { x: snake[0].x, y: snake[0].y };
+
+      if (checkCollision(head)) {
+        clearInterval(game);
+        alert('Game Over!');
+      }
+    }
+
+    let game = setInterval(gameLoop, 100);
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft' && direction !== 'RIGHT') direction = 'LEFT';
+      if (e.key === 'ArrowUp' && direction !== 'DOWN') direction = 'UP';
+      if (e.key === 'ArrowRight' && direction !== 'LEFT') direction = 'RIGHT';
+      if (e.key === 'ArrowDown' && direction !== 'UP') direction = 'DOWN';
+    });
+
+    let difficulty = 'easy';
+    let activeGame = 'snake';
+
+    document.querySelectorAll('[data-game]').forEach((button) => {
+      button.addEventListener('click', () => {
+        activeGame = button.dataset.game;
+        document.querySelectorAll('[data-game]').forEach((item) => item.classList.toggle('active', item === button));
+        document.querySelectorAll('.game-view').forEach((view) => view.classList.remove('active'));
+        document.getElementById(`${activeGame}-view`).classList.add('active');
+
+        clearInterval(gameInterval);
+        if (activeGame === 'snake') startGame();
+        if (activeGame === 'checkers') initCheckers();
+        if (activeGame === 'chess') initChess();
+      });
+    });
+
+    document.querySelectorAll('[data-difficulty]').forEach((button) => {
+      button.addEventListener('click', () => {
+        difficulty = button.dataset.difficulty;
+        document.querySelectorAll('[data-difficulty]').forEach((item) => item.classList.toggle('active', item === button));
+
+        if (activeGame === 'snake') {
+          clearInterval(gameInterval);
+          const speeds = { easy: 210, medium: 150, hard: 95 };
+          gameInterval = setInterval(moveSnake, speeds[difficulty]);
+        } else if (activeGame === 'checkers') {
+          initCheckers();
+        } else if (activeGame === 'chess') {
+          initChess();
+        }
+      });
+    });
+
+    const checkersCanvas = document.getElementById('checkers-canvas');
+    const checkersCtx = checkersCanvas.getContext('2d');
+    const checkersStatus = document.getElementById('checkers-status');
+    let checkersBoard = [];
+    let checkersSelected = null;
+
+    function initCheckers() {
+      checkersBoard = Array.from({ length: 8 }, () => Array(8).fill(null));
+      for (let r = 0; r < 8; r++) {
+        for (let c = 0; c < 8; c++) {
+          if ((r + c) % 2 === 1) {
+            if (r < 3) checkersBoard[r][c] = { side: 'b', king: false };
+            if (r > 4) checkersBoard[r][c] = { side: 'w', king: false };
+          }
+        }
+      }
+      checkersSelected = null;
+      checkersStatus.textContent = 'Sua vez: peças claras';
+      drawCheckers();
+    }
+
+    function drawCheckers() {
+      const cell = 40;
+      for (let r = 0; r < 8; r++) {
+        for (let c = 0; c < 8; c++) {
+          checkersCtx.fillStyle = (r + c) % 2 ? '#17101f' : '#332044';
+          checkersCtx.fillRect(c * cell, r * cell, cell, cell);
+          const piece = checkersBoard[r][c];
+          if (!piece) continue;
+          const x = c * cell + cell / 2;
+          const y = r * cell + cell / 2;
+          const gradient = checkersCtx.createRadialGradient(x - 5, y - 6, 2, x, y, 15);
+          gradient.addColorStop(0, piece.side === 'w' ? '#e6ccff' : '#b87bee');
+          gradient.addColorStop(1, piece.side === 'w' ? '#9b5cf6' : '#4d286f');
+          checkersCtx.fillStyle = gradient;
+          checkersCtx.beginPath();
+          checkersCtx.arc(x, y, 14, 0, Math.PI * 2);
+          checkersCtx.fill();
+          checkersCtx.strokeStyle = piece.side === 'w' ? '#f3e8ff' : '#cda8ef';
+          checkersCtx.lineWidth = 2;
+          checkersCtx.stroke();
+          if (piece.king) {
+            checkersCtx.fillStyle = '#f7f3ff';
+            checkersCtx.font = 'bold 16px serif';
+            checkersCtx.textAlign = 'center';
+            checkersCtx.textBaseline = 'middle';
+            checkersCtx.fillText('♛', x, y + 1);
+          }
+        }
+      }
+      if (checkersSelected) {
+        checkersCtx.strokeStyle = '#d5b0ff';
+        checkersCtx.lineWidth = 3;
+        checkersCtx.strokeRect(checkersSelected.c * cell + 2, checkersSelected.r * cell + 2, cell - 4, cell - 4);
+      }
+    }
+
+    function getCheckersMoves(side, capturesOnly = false) {
+      const moves = [];
+      const dirs = side === 'w' ? [-1, 1] : [1, -1];
+      for (let r = 0; r < 8; r++) {
+        for (let c = 0; c < 8; c++) {
+          const piece = checkersBoard[r]?.[c];
+          if (!piece || piece.side !== side) continue;
+          const directions = piece.king ? [-1, 1] : dirs;
+          for (const dr of directions) {
+            for (const dc of [-1, 1]) {
+              const mr = r + dr;
+              const mc = c + dc;
+              if (mr >= 0 && mr < 8 && mc >= 0 && mc < 8) {
+                if (!checkersBoard[mr][mc]) {
+                  if (!capturesOnly) moves.push({ from: { r, c }, to: { r: mr, c: mc }, capture: null });
+                } else if (checkersBoard[mr][mc].side !== side) {
+                  const lr = r + dr * 2;
+                  const lc = c + dc * 2;
+                  if (lr >= 0 && lr < 8 && lc >= 0 && lc < 8 && !checkersBoard[lr][lc]) {
+                    moves.push({ from: { r, c }, to: { r: lr, c: lc }, capture: { r: mr, c: mc } });
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      const captures = moves.filter((move) => move.capture);
+      return captures.length ? captures : (capturesOnly ? [] : moves);
+    }
+
+    function applyCheckersMove(move) {
+      const piece = checkersBoard[move.from.r][move.from.c];
+      checkersBoard[move.to.r][move.to.c] = piece;
+      checkersBoard[move.from.r][move.from.c] = null;
+      if (move.capture) checkersBoard[move.capture.r][move.capture.c] = null;
+      if (piece.side === 'w' && move.to.r === 0) piece.king = true;
+      if (piece.side === 'b' && move.to.r === 7) piece.king = true;
+      checkersSelected = null;
+    }
+
+    function chooseCheckersMove(moves) {
+      const captures = moves.filter((move) => move.capture);
+      if (difficulty === 'easy') return moves[Math.floor(Math.random() * moves.length)];
+      if (difficulty === 'medium') return captures.length ? captures[Math.floor(Math.random() * captures.length)] : moves[Math.floor(Math.random() * moves.length)];
+      let best = moves[0];
+      let bestScore = -Infinity;
+      for (const move of moves) {
+        let score = move.capture ? 12 : 0;
+        if (move.to.r === 7 || move.to.r === 0) score += 4;
+        score += Math.abs(3.5 - move.to.r) * .15;
+        score -= Math.abs(3.5 - move.from.r) * .05;
+        if (score > bestScore) { bestScore = score; best = move; }
+      }
+      return best;
+    }
+
+    checkersCanvas.addEventListener('click', (event) => {
+      const rect = checkersCanvas.getBoundingRect();
+      const c = Math.floor((event.clientX - rect.left) / (rect.width / 8));
+      const r = Math.floor((event.clientY - rect.top) / (rect.height / 8));
+      const piece = checkersBoard[r][c];
+      if (piece?.side === 'w') {
+        checkersSelected = { r, c };
+      } else if (checkersSelected) {
+        const moves = getCheckersMoves('w', false).filter((move) =>
+          move.from.r === checkersSelected.r && move.from.c === checkersSelected.c && move.to.r === r && move.to.c === c
+        );
+        if (moves.length) {
+          applyCheckersMove(moves[0]);
+          drawCheckers();
+          checkersStatus.textContent = 'IA pensando…';
+          setTimeout(() => {
+            const aiMoves = getCheckersMoves('b');
+            if (aiMoves.length) {
+              applyCheckersMove(chooseCheckersMove(aiMoves));
+              checkersStatus.textContent = 'Sua vez: peças claras';
+            } else {
+              checkersStatus.textContent = 'Você venceu!';
+            }
+            drawCheckers();
+          }, difficulty === 'hard' ? 520 : 360);
+        }
+      }
+      drawCheckers();
+    });
+  </script>
+</body>
+</html>
