@@ -21,14 +21,77 @@
 
     :root[data-theme="light"] {
       --bg: #f4f0fa;
-      --surface: rgba(255, 255, 255, 0.82);
+      --surface: rgba(255, 255, 255, 0.92);
       --surface-strong: #ffffff;
-      --text: #1d1726;
-      --muted: #685f73;
-      --accent: #8550d5;
-      --accent-2: #7040b3;
-      --border: rgba(112, 64, 179, 0.16);
-      --shadow: 0 24px 70px rgba(74, 48, 105, 0.14);
+      --text: #17121f;
+      --muted: #5f566b;
+      --accent: #7440b8;
+      --accent-2: #5b2e96;
+      --border: rgba(91, 46, 150, 0.24);
+      --shadow: 0 24px 70px rgba(74, 48, 105, 0.18);
+      color-scheme: light;
+    }
+
+    :root[data-theme="light"] body {
+      background:
+        radial-gradient(circle at 82% 12%, rgba(155, 92, 246, 0.14), transparent 26rem),
+        radial-gradient(circle at 12% 84%, rgba(115, 48, 196, 0.08), transparent 24rem),
+        #f7f4fb;
+    }
+
+    :root[data-theme="light"] body::before {
+      opacity: 0.38;
+      background-image:
+        linear-gradient(rgba(91,46,150,.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(91,46,150,.07) 1px, transparent 1px);
+    }
+
+    :root[data-theme="light"] .orb {
+      opacity: 0.55;
+      background: rgba(155, 92, 246, 0.10);
+    }
+
+    :root[data-theme="light"] .brand-mark,
+    :root[data-theme="light"] .theme-toggle,
+    :root[data-theme="light"] .snake-launcher,
+    :root[data-theme="light"] .snake-game,
+    :root[data-theme="light"] .profile-card {
+      box-shadow: 0 10px 30px rgba(74, 48, 105, 0.12);
+    }
+
+    :root[data-theme="light"] .button {
+      background: rgba(255, 255, 255, 0.82);
+      border-color: rgba(91, 46, 150, 0.22);
+      box-shadow: 0 8px 24px rgba(74, 48, 105, 0.08);
+    }
+
+    :root[data-theme="light"] .button.primary,
+    :root[data-theme="light"] .game-tabs button.active,
+    :root[data-theme="light"] .difficulty-tabs button.active {
+      color: #fff;
+    }
+
+    :root[data-theme="light"] .card-content {
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 10px 28px rgba(74, 48, 105, 0.10);
+    }
+
+    :root[data-theme="light"] footer {
+      color: rgba(95, 86, 107, 0.82);
+    }
+
+    :root[data-theme="light"] .game-tabs button,
+    :root[data-theme="light"] .difficulty-tabs button,
+    :root[data-theme="light"] .snake-controls button {
+      color: var(--text);
+      border-color: var(--border);
+      background: rgba(155, 92, 246, 0.10);
+    }
+
+    :root[data-theme="light"] .game-tabs button.active,
+    :root[data-theme="light"] .difficulty-tabs button.active {
+      background: linear-gradient(135deg, #8550d5, #6936a7);
+      border-color: #6936a7;
     }
 
     * { box-sizing: border-box; }
@@ -555,7 +618,7 @@
 
         <h1>
           Thiago Prestes
-          <span>Desenvolvedor Front-end</span>
+          <span>Estudante de ADS</span>
         </h1>
 
         <div class="intro">
@@ -605,44 +668,44 @@
       <button id="snake-close" type="button" aria-label="Fechar jogos">✕</button>
     </div>
 
-    <div class="game-tabs" aria-label="Escolher jogo">
-      <button type="button" class="active" data-game="snake">Cobrinha</button>
-      <button type="button" data-game="checkers">Damas</button>
-      <button type="button" data-game="chess">Xadrez</button>
-    </div>
-
-    <div class="difficulty-tabs" aria-label="Escolher dificuldade">
-      <button type="button" data-difficulty="easy" class="active">Fácil</button>
-      <button type="button" data-difficulty="medium">Médio</button>
-      <button type="button" data-difficulty="hard">Difícil</button>
-    </div>
-
-    <div class="game-view active" id="snake-view">
-      <div class="snake-header">
-        <span>Pontos · <b id="snake-score">0</b></span>
-        <button id="snake-restart" type="button" aria-label="Reiniciar cobrinha">↻</button>
+      <div class="game-tabs" aria-label="Escolher jogo">
+        <button type="button" class="active" data-game="snake">Cobrinha</button>
+        <button type="button" data-game="checkers">Damas</button>
+        <button type="button" data-game="chess">Xadrez</button>
       </div>
-      <canvas id="snake-canvas" width="256" height="256" tabindex="0" aria-label="Tabuleiro da Cobrinha"></canvas>
-      <div class="snake-controls" aria-label="Controles da cobrinha">
-        <button type="button" data-direction="up" aria-label="Mover para cima">▲</button>
-        <button type="button" data-direction="left" aria-label="Mover para esquerda">◀</button>
-        <button type="button" data-direction="down" aria-label="Mover para baixo">▼</button>
-        <button type="button" data-direction="right" aria-label="Mover para direita">▶</button>
+
+      <div class="difficulty-tabs" aria-label="Escolher dificuldade">
+        <button type="button" data-difficulty="easy" class="active">Fácil</button>
+        <button type="button" data-difficulty="medium">Médio</button>
+        <button type="button" data-difficulty="hard">Difícil</button>
       </div>
-    </div>
 
-    <div class="game-view" id="checkers-view">
-      <canvas id="checkers-canvas" width="320" height="320"></canvas>
-      <div class="board-status" id="checkers-status">Sua vez: peças claras</div>
-    </div>
+      <div class="game-view active" id="snake-view">
+        <div class="snake-header">
+          <span>Pontos · <b id="snake-score">0</b></span>
+        </div>
+        <canvas id="snake-canvas" width="256" height="256"></canvas>
+        <div class="snake-controls" aria-label="Controles da cobrinha">
+          <button type="button" data-direction="up" aria-label="Mover para cima">▲</button>
+          <button type="button" data-direction="left" aria-label="Mover para esquerda">◀</button>
+          <button type="button" data-direction="down" aria-label="Mover para baixo">▼</button>
+          <button type="button" data-direction="right" aria-label="Mover para direita">▶</button>
+        </div>
+      </div>
 
-    <div class="game-view" id="chess-view">
-      <canvas id="chess-canvas" width="320" height="320"></canvas>
-      <div class="board-status" id="chess-status">Sua vez: peças brancas</div>
-    </div>
-  </section>
+      <div class="game-view" id="checkers-view">
+        <canvas id="checkers-canvas" width="320" height="320"></canvas>
+        <div class="board-status" id="checkers-status">Sua vez: peças claras</div>
+      </div>
 
-  <script type="text/plain">
+      <div class="game-view" id="chess-view">
+        <canvas id="chess-canvas" width="320" height="320"></canvas>
+        <div class="board-status" id="chess-status">Sua vez: peças brancas</div>
+      </div>
+    </section>
+  </div>
+
+  <script>
     // Script para alternar temas
     const themeToggle = document.querySelector('.theme-toggle');
     const currentTheme = localStorage.getItem('theme');
@@ -653,9 +716,11 @@
       if (currentTheme === 'light') {
         document.querySelector('.sun-icon').style.display = 'block';
         document.querySelector('.moon-icon').style.display = 'none';
+        document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f4fb');
       } else {
         document.querySelector('.sun-icon').style.display = 'none';
         document.querySelector('.moon-icon').style.display = 'block';
+        document.querySelector('meta[name="theme-color"]').setAttribute('content', '#09070d');
       }
     }
 
@@ -671,12 +736,13 @@
 
       document.querySelector('.sun-icon').style.display = theme === 'light' ? 'block' : 'none';
       document.querySelector('.moon-icon').style.display = theme === 'light' ? 'none' : 'block';
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', theme === 'light' ? '#f7f4fb' : '#09070d');
     });
 
     // Script para o jogo da cobrinha
     const snakeLauncher = document.querySelector('.snake-launcher');
     const snakeGame = document.querySelector('.snake-game');
-    const closeSnakeGame = document.querySelector('.close-snake-game');
+    const closeSnakeGame = document.querySelector('#snake-close');
     const gameViews = document.querySelectorAll('.game-view');
     const difficultyTabs = document.querySelectorAll('.difficulty-tabs button');
     const boardStatus = document.querySelector('.board-status');
