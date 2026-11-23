@@ -65,7 +65,13 @@
       box-shadow: 0 8px 24px rgba(74, 48, 105, 0.08);
     }
 
-    :root[data-theme="light"] .button.primary,
+    :root[data-theme="light"] .button.primary {
+      color: #fff;
+      background: linear-gradient(135deg, #7440b8, #5b2e96);
+      border-color: #5b2e96;
+      box-shadow: 0 12px 30px rgba(91, 46, 150, 0.28);
+    }
+
     :root[data-theme="light"] .game-tabs button.active,
     :root[data-theme="light"] .difficulty-tabs button.active {
       color: #fff;
@@ -402,11 +408,24 @@
     @media (max-width: 850px) {
       main {
         grid-template-columns: 1fr;
+        align-content: center;
         padding-top: 32px;
+        text-align: center;
+      }
+
+      .hero {
+        width: 100%;
+        margin-inline: auto;
+      }
+
+      .actions {
+        justify-content: center;
       }
 
       .profile-card {
         min-height: 390px;
+        width: min(420px, 100%);
+        margin-inline: auto;
       }
 
       h1 { font-size: clamp(3.5rem, 16vw, 6rem); }
@@ -529,8 +548,14 @@
     .game-view.active { display: block; }
 
     #snake-canvas, #checkers-canvas, #chess-canvas {
+      display: block;
       width: 330px;
       height: 330px;
+      max-width: 100%;
+      margin-inline: auto;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
     }
 
     .board-status {
@@ -575,8 +600,45 @@
     }
 
     @media (max-width: 520px) {
-      .snake-game { width: 342px; }
-      #snake-canvas, #checkers-canvas, #chess-canvas { width: 318px; height: 318px; }
+      .snake-launcher {
+        right: 14px;
+        bottom: 14px;
+        width: 54px;
+        height: 54px;
+      }
+
+      .snake-game {
+        right: auto;
+        left: 50%;
+        bottom: 78px;
+        width: calc(100vw - 24px);
+        max-height: calc(100dvh - 96px);
+        overflow-y: auto;
+        transform: translate(-50%, 16px) scale(.98);
+      }
+
+      .snake-game.open {
+        transform: translate(-50%, 0) scale(1);
+      }
+
+      #snake-canvas, #checkers-canvas, #chess-canvas {
+        width: min(318px, calc(100vw - 48px));
+        height: min(318px, calc(100vw - 48px));
+      }
+
+      .snake-controls {
+        grid-template-columns: repeat(3, 46px);
+        grid-template-rows: repeat(2, 46px);
+        margin-block: 10px 2px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .snake-game { width: calc(100vw - 16px); }
+      #snake-canvas, #checkers-canvas, #chess-canvas {
+        width: min(300px, calc(100vw - 40px));
+        height: min(300px, calc(100vw - 40px));
+      }
     }
   </style>
 </head>
@@ -705,7 +767,8 @@
     </section>
   </div>
 
-  <script>
+  <script type="text/plain">
+    // Script legado mantido como referência; a implementação ativa está em games.js.
     // Script para alternar temas
     const themeToggle = document.querySelector('.theme-toggle');
     const currentTheme = localStorage.getItem('theme');

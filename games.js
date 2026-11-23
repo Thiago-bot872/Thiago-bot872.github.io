@@ -1,15 +1,20 @@
 (() => {
   const $ = (s) => document.querySelector(s);
   const $$ = (s) => [...document.querySelectorAll(s)];
+  const isLightTheme = () => document.documentElement.dataset.theme === 'light';
 
   // Tema
   const savedTheme = localStorage.getItem('theme');
   if (savedTheme) document.documentElement.dataset.theme = savedTheme;
   $('.theme-toggle')?.addEventListener('click', () => {
+    const nextTheme = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+    document.documentElement.dataset.theme = nextTheme;
+    localStorage.setItem('theme', nextTheme);
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', nextTheme === 'light' ? '#f7f4fb' : '#09070d');
     setTimeout(() => {
-      if (typeof drawSnake === 'function') drawSnake();
-      if (typeof drawCheckers === 'function') drawCheckers();
-      if (typeof drawChess === 'function') drawChess();
+      drawSnake();
+      drawCheckers();
+      drawChess();
     }, 0);
   });
 
@@ -80,7 +85,26 @@
     const map = {ArrowLeft:'LEFT', ArrowRight:'RIGHT', ArrowUp:'UP', ArrowDown:'DOWN'};
     if (map[event.key]) { event.preventDefault(); setSnakeDirection(map[event.key]); }
   });
-  $$('[data-direction]').forEach((button) => button.addEventListener('click', () => setSnakeDirection(button.dataset.direction.toUpperCase())));
+  $$('[data-direction]').forEach((button) => button.addEventListener('pointerdown', (event) => {
+    event.preventEvent?.();
+    event.preventDefault();
+    setSnakeDirection(button.dataset.direction.toUpperCase());
+  }));
+
+  let snakeTouchStart = null;
+  snakeCanvas?.addEventListener('pointerdown', (event) => {
+    snakeTouchStart = { x: event.clientX, y: event.clientY };
+  });
+  snakeCanvas?.addEventListener('pointerup', (event) => {
+    if (!snakeTouchStart) return;
+    const dx = event.clientX - snakeTouchStart.x;
+    const dy = event.clientY - snakeTouchStart.y;
+    snakeTouchStart = null;
+    if (Math.max(Math.abs(dx), Math.abs(dy)) < 24) return;
+    setSnakeDirection(Math.abs(dx) > Math.abs(dy)
+      ? (dx > 0 ? 'RIGHT' : 'LEFT')
+      : (dy > 0 ? 'DOWN' : 'UP'));
+  });
 
   function snakeStep() {
     if (!alive) return;
